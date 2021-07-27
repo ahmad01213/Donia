@@ -1,25 +1,31 @@
+import 'package:Donya/Models/Ad.dart';
+import 'package:Donya/Providers/AdsProvider.dart';
 import 'package:flutter/material.dart';
-import 'package:rafeeg/screens/AddDetailPage.dart';
-import 'package:rafeeg/widgets/Boxh10.dart';
-import 'package:rafeeg/widgets/Texts.dart';
-import 'package:rafeeg/widgets/btn_back.dart';
-import 'package:rafeeg/widgets/home_slider.dart';
-
-import '../shared_data.dart';
-
+import 'package:Donya/screens/AddDetailPage.dart';
+import 'package:Donya/widgets/Boxh10.dart';
+import 'package:Donya/widgets/Texts.dart';
+import 'package:Donya/widgets/btn_back.dart';
+import 'package:Donya/widgets/home_slider.dart';
+import 'package:provider/provider.dart';
+import '../helpers.dart';
 class AdsScreen extends StatelessWidget {
-  String title;
-
-  AdsScreen(this.title);
-
+  Map<String,String> params;
+  AdsScreen(this.params);
+  late AdsProvider _adsProvider;
+  bool start = true;
   @override
   Widget build(BuildContext context) {
+    if(start){
+      _adsProvider = Provider.of<AdsProvider>(context);
+      _adsProvider.getAdsByCategory(params: params,);
+      start = false;
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mainColor,
         centerTitle: false,
         title: Texts(
-          title: title,
+          title: params['category'].toString()+" - "+params['subcategory'].toString(),
           fSize: 22,
           weight: FontWeight.bold,
           color: Colors.white,
@@ -30,22 +36,13 @@ class AdsScreen extends StatelessWidget {
         color: Colors.green.withOpacity(0.05),
         child: ListView.builder(
             shrinkWrap: true,
-            itemCount: 11,
+            itemCount: _adsProvider.categoryAds.length,
             itemBuilder: (context, index) {
-              return index == 0
-                  ? Container(
-                      color: Colors.white,
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                            hintText: "  ابحث في النتائج  ",
-                            hintStyle:
-                                TextStyle(fontSize: 20, color: greyyColor)),
-                      ),
-                    )
-                  : MaterialButton(
+              Ad ad = _adsProvider.categoryAds[index];
+              return MaterialButton(
                 padding: EdgeInsets.all(0),
                 onPressed: (){
-                  pushPage(context, AddDetailPage());
+                  pushPage(context, AddDetailPage(ad));
                 },
                     child: Container(
                         width: double.infinity,
@@ -58,10 +55,7 @@ class AdsScreen extends StatelessWidget {
                               Container(
                                   height: 150,
                                   child: HomeSlider(
-                                    imagesUrlList: [
-                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCw1_GynZjsPGWGTWDx-WYlJn8ebjbIU8N_A&usqp=CAU',
-                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnhmHo64RO9qsOc14rSwptIcOPUb-_q7Bhtg&usqp=CAU'
-                                    ],
+                                    imagesUrlList: ad.photos.map((element)=>element.url).toList(),
                                     width: MediaQuery.of(context).size.width,
                                     height:
                                         MediaQuery.of(context).size.height * 0.45,
@@ -72,8 +66,7 @@ class AdsScreen extends StatelessWidget {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Texts(
                                   lines: 2,
-                                  title:
-                                      "من المتحده جروب : سيات ابيزا 2021 اقل مقدم اقل فايده6.8٪؜ وبدون عمل من المتحده جروب : سيات ابيزا 2021 اقل مقدم اقل فايده6.8٪؜ وبدون عمل",
+                                  title:ad.description
 
                                 ),
                               )

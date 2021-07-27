@@ -1,20 +1,25 @@
 
+import 'package:Donya/Providers/AuthProvider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:Donya/widgets/Texts.dart';
+import 'package:Donya/widgets/btn_back.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:rafeeg/widgets/Texts.dart';
-import 'package:rafeeg/widgets/btn_back.dart';
-
-
-import '../shared_data.dart';
+import 'package:provider/provider.dart';
+import '../helpers.dart';
 class RegisterScreen extends StatefulWidget {
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
 class _RegisterScreenState extends State<RegisterScreen> {
+  final Map<String, dynamic> formData = {};
   final formKey= GlobalKey<FormState>();
+  var _authProvider;
   @override
   Widget build(BuildContext context) {
+    if(_authProvider==null){
+      _authProvider=Provider.of<AuthProvider>(context);
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -68,6 +73,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     icon: Icons.account_circle,
                     inputType: TextInputType.text,
                     onChange: (value){
+                      formData['name'] = value.toString();
                     },
                     password: false),
                 SizedBox(
@@ -78,6 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     icon: Icons.account_circle,
                     inputType: TextInputType.text,
                     onChange: (value){
+                      formData['email'] = value.toString();
                     },
                     password: false),
                 SizedBox(
@@ -88,6 +95,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     icon: Icons.phone_android,
                     inputType: TextInputType.phone,
                     onChange: (value){
+                      formData['phone'] = value.toString();
                     },
                     password: false),
                 SizedBox(
@@ -98,14 +106,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     icon: Icons.remove_red_eye,
                     inputType: TextInputType.visiblePassword,
                     onChange: (value){
-                    },
+                      formData['password'] = value.toString();                    },
                     password: true),
                 SizedBox(
                   height: 20,
                 ),
                 InkWell(
                   onTap: (){
-
+                  _authProvider.register(context: context,params: formData);
                   },
                   child: Container(
                     height: 60,
@@ -120,12 +128,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              'إنشاء الحساب',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
+                            Row(
+                              children: [
+                                Text(
+                                  'إنشاء الحساب',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+
+                                SizedBox(width: 20,),
+                                if (_authProvider.loading)SpinKitRing(color: Colors.white,lineWidth: 3,duration: Duration(milliseconds: 600),size: 25,)
+                              ],
                             ),
                           ],
                         )),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rafeeg/widgets/btn_back.dart';
-import 'package:rafeeg/widgets/slider.dart';
+import 'package:Donya/widgets/btn_back.dart';
+import 'package:Donya/widgets/slider.dart';
 
 
 class ImageGallary extends StatelessWidget {

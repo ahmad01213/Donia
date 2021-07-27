@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:rafeeg/screens/Home.dart';
-import 'package:rafeeg/screens/SignInScreen.dart';
-import 'package:rafeeg/screens/categories.dart';
-import 'package:rafeeg/widgets/Texts.dart';
+import 'package:Donya/screens/Home.dart';
+import 'package:Donya/screens/SignInScreen.dart';
+import 'package:Donya/screens/categories.dart';
+import 'package:Donya/widgets/Texts.dart';
 
+import '../helpers.dart';
 import '../shared_data.dart';
 
 class StartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // signOut();
     return Scaffold(
       body: Container(
         width: double.infinity,

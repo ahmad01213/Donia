@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:rafeeg/screens/ads_screen.dart';
-import 'package:rafeeg/shared_data.dart';
-import 'package:rafeeg/widgets/Boxh10.dart';
-import 'package:rafeeg/widgets/Boxw10.dart';
-import 'package:rafeeg/widgets/Texts.dart';
-import 'package:rafeeg/widgets/btn_back.dart';
-import 'package:rafeeg/widgets/divider.dart';
+import 'package:Donya/screens/ads_screen.dart';
+import 'package:Donya/shared_data.dart';
+import 'package:Donya/widgets/Boxh10.dart';
+import 'package:Donya/widgets/Boxw10.dart';
+import 'package:Donya/widgets/Texts.dart';
+import 'package:Donya/widgets/btn_back.dart';
+import 'package:Donya/widgets/divider.dart';
+
+import '../helpers.dart';
 class Categories extends StatelessWidget {
  final String categoryName;
   List<dynamic> subcategories = [];
@@ -38,8 +40,13 @@ class Categories extends StatelessWidget {
                 hintStyle: TextStyle(fontSize: 20, color: greyyColor)),
           ),
         ): buildListItem('', subcategories[index-1]['name'], '213',onPressed: (){
+          Map<String,String> params = {
+            "category":categoryName,
+            "subcategory":subcategories[index-1]['name'],
+            "country":'eg',
+          };
           List options = optionList.where((o) =>o['parent']==categoryName ).toList();
-          options.length==0?pushPage(context, AdsScreen(subcategories[index-1]['name']+" - "+categoryName)): pushPage(context, Categories(subcategories[index-1]['name'], options));
+          options.length==0?pushPage(context, AdsScreen(params)): pushPage(context, Categories(subcategories[index-1]['name'], options));
         });
       }),
     );

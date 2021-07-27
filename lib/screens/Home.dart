@@ -1,17 +1,33 @@
+import 'package:Donya/Providers/AdsProvider.dart';
+import 'package:Donya/screens/MyAds.dart';
+import 'package:Donya/screens/SearchScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:rafeeg/screens/SignInScreen.dart';
-import 'package:rafeeg/screens/addad.dart';
-import 'package:rafeeg/screens/categories.dart';
-import 'package:rafeeg/shared_data.dart';
-import 'package:rafeeg/widgets/Boxh10.dart';
-import 'package:rafeeg/widgets/Boxw10.dart';
-import 'package:rafeeg/widgets/Texts.dart';
-import 'package:rafeeg/widgets/divider.dart';
-import 'package:rafeeg/widgets/textfields.dart';
+import 'package:Donya/screens/SignInScreen.dart';
+import 'package:Donya/screens/addad.dart';
+import 'package:Donya/screens/categories.dart';
+import 'package:Donya/shared_data.dart';
+import 'package:Donya/widgets/Boxh10.dart';
+import 'package:Donya/widgets/Boxw10.dart';
+import 'package:Donya/widgets/Texts.dart';
+import 'package:Donya/widgets/divider.dart';
+import 'package:provider/provider.dart';
 
+import '../helpers.dart';
 class Home extends StatelessWidget {
+ late AdsProvider _adsProvider;
+ bool start = true;
+ initData() async {
+  await readToken();
+
+   _adsProvider.getUserAds();
+ }
   @override
   Widget build(BuildContext context) {
+    if(start){
+      _adsProvider = Provider.of<AdsProvider>(context);
+      initData();
+      start=false;
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mainColor,
@@ -20,7 +36,7 @@ class Home extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Texts(
-              title: "دنيا السعودية",
+              title: "دنيا ـ  مصر",
               fSize: 22,
               weight: FontWeight.bold,
               color: Colors.white,
@@ -42,6 +58,9 @@ class Home extends StatelessWidget {
         shrinkWrap: true,
         children: [
           TextFormField(
+            onTap: (){
+              pushPage(context, SearchScreen());
+            },
             decoration: InputDecoration(
                 hintText: "  ما الذي تبحث عنه ؟  ",
                 hintStyle: TextStyle(fontSize: 20, color: greyyColor)),
@@ -50,7 +69,7 @@ class Home extends StatelessWidget {
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROiT9UzUtnKUmODnr5mQiDQvmUDIGs7ZUtsQ&usqp=CAU',
             'نشر إعلان',
             '',
-            onPressed: () => pushPage(context, AddAd()),
+            onPressed: () =>pushPage(context, isRegistered()? AddAd():SignInScreen()),
           ),
           Container(
             height: 70,
@@ -108,22 +127,34 @@ class Home extends StatelessWidget {
           buildListItem(
               'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtlv5MBusnTkk4vdPyROxnU7j06DwK2V9dGQ&usqp=CAU',
               'الإعلانات المرفوضة',
-              '234'),
+              '234',
+              onPressed: (){
+                pushPage(context, MyAds(2, "الإعلانات المرفوضة"));
+              }
+          ),
           buildListItem(
               'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQgiZH5IBvQwwtiN6ubXbqn3YDom-j_FWOVw&usqp=CAU',
               'الإعلانات الفعالة',
-              '234'),
+              '234',
+              onPressed: (){
+                pushPage(context, MyAds(0, "الإعلانات الفعالة"));
+              }
+          ),
           buildListItem(
               'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFMbNVzFSSAvPOoRYjQUaRj7IfmV2bLtWwbg&usqp=CAU',
               'الإعلانات المعلقة',
-              '234'),
+              '234',
+            onPressed: (){
+                pushPage(context, MyAds(1, "الإعلانات المعلقة"));
+            }
+          ),
           Container(
             height: 70,
             color: Colors.grey.withOpacity(0.1),
           ),
           buildListItem(
-              'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Flag_of_Saudi_Arabia.svg/800px-Flag_of_Saudi_Arabia.svg.png',
-              'السعودية',
+              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2QzXOURtFEuQDV8WepJ1LzplEEoqvAz081aQKvezRe-JwO5dTP2BD6z2OyqJvrq3_Lps&usqp=CAU',
+              'مصر',
               ''),
         ],
       ),

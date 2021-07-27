@@ -1,21 +1,3 @@
-import 'package:flutter/material.dart';
-
-const mainColor = Color(0xff535c68);
-const secondColor = Colors.orange;
-const greyyColor = Colors.grey;
-
-replacePage(context, page) {
-  Navigator.of(context)
-      .pushReplacement(MaterialPageRoute(builder: (context) => page));
-}
-
-pushPage(context, page) {
-  Navigator.of(context).push(MaterialPageRoute(builder: (context) => page));
-}
-
-pop(context) {
-  Navigator.of(context).pop();
-}
 
 List categoryList = [
   {

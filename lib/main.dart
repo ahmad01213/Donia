@@ -1,8 +1,14 @@
+import 'package:Donya/Providers/AdsProvider.dart';
+import 'package:Donya/Providers/AuthProvider.dart';
+import 'package:Donya/screens/addad.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:rafeeg/screens/Home.dart';
-import 'package:rafeeg/screens/StartScreen.dart';
-import 'package:rafeeg/shared_data.dart';
+import 'package:Donya/screens/Home.dart';
+import 'package:Donya/screens/StartScreen.dart';
+import 'package:Donya/shared_data.dart';
+import 'package:provider/provider.dart';
+
+import 'helpers.dart';
 
 Future<void> main() async {
 
@@ -23,17 +29,25 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     context.locale = Locale('ar');
-    return MaterialApp(
-      title: 'رفيق',
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
-      theme: ThemeData(
+    return MultiProvider(
 
-        primaryColor: mainColor
+      providers: [
+        ChangeNotifierProvider<AuthProvider>(create: (context) => AuthProvider()),
+        ChangeNotifierProvider<AdsProvider>(create: (context) => AdsProvider()),
+      ],
+      child: MaterialApp(
 
+        title: 'دنيا',
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
+        theme: ThemeData(
+
+          primaryColor: mainColor
+
+        ),
+        home: StartScreen(),
       ),
-      home: StartScreen(),
     );
   }
 }

@@ -1,5 +1,8 @@
+import 'package:Donya/screens/AdNewAd/SelectSubCategory.dart';
 import 'package:flutter/material.dart';
-import 'package:rafeeg/shared_data.dart';
+import 'package:Donya/shared_data.dart';
+
+import '../helpers.dart';
 
 class BtnBack extends StatelessWidget {
   final context;
@@ -11,6 +14,7 @@ class BtnBack extends StatelessWidget {
     return IconButton(
 
       onPressed: () {
+        data = [];
         pop(context);
       },
       icon: Icon(Icons.arrow_back,size: 25,color: color,),

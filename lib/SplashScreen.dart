@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:faker/faker.dart';
 
+import 'helpers.dart';
+
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -25,7 +27,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   @override
-  void initState() {
+  void initState() async {
     super.initState();
+    await readToken();
   }
 }

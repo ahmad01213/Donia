@@ -1,20 +1,22 @@
+import 'package:Donya/Helpers/Functions.dart';
+import 'package:Donya/Models/Ad.dart';
 import 'package:flutter/material.dart';
-import 'package:rafeeg/widgets/Boxh10.dart';
-import 'package:rafeeg/widgets/ImageGallary.dart';
-import 'package:rafeeg/widgets/Texts.dart';
-import 'package:rafeeg/widgets/btn_back.dart';
-import 'package:rafeeg/widgets/home_slider.dart';
+import 'package:Donya/widgets/Boxh10.dart';
+import 'package:Donya/widgets/ImageGallary.dart';
+import 'package:Donya/widgets/Texts.dart';
+import 'package:Donya/widgets/btn_back.dart';
+import 'package:Donya/widgets/home_slider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import '../shared_data.dart';
+import '../helpers.dart';
+import '../helpers.dart';
 
 class AddDetailPage extends StatelessWidget {
-  final images = [
-    'https://cdn.pixabay.com/photo/2016/12/03/18/57/car-1880381__480.jpg',
-    'https://cdn.pixabay.com/photo/2015/09/02/12/25/bmw-918407__480.jpg',
-        "https://c6.mourjan.com/repos/d/p152/1523911/6062a5511b086.webp",
-    "https://c6.mourjan.com/repos/d/p152/1523911/6062a55117bb5.webp"
+  Ad ad;
 
-  ];
+  AddDetailPage(this.ad);
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,12 +37,12 @@ class AddDetailPage extends StatelessWidget {
           MaterialButton(
             padding: EdgeInsets.only(bottom: 20),
             onPressed: (){
-              pushPage(context, ImageGallary(images));
+              pushPage(context, ImageGallary(ad.photos.map((e) => e.url).toList()));
             },
             child: Container(
                 height: 200,
                 child: HomeSlider(
-                  imagesUrlList: images,
+                  imagesUrlList: ad.photos.map((e) => e.url).toList(),
                   width: MediaQuery.of(context).size.width,
                   height:
                   MediaQuery.of(context).size.height * 0.45,
@@ -54,19 +56,30 @@ class AddDetailPage extends StatelessWidget {
               lines: 20,
               fSize: 22,
               weight: FontWeight.normal,
-              title:
-              "  من المتحده جروب : سيات ابيزا 2021 اقل مقدم اقل فايده6.8٪؜ وبدون عمل من المتحده جروب : سيات ابيزا 2021 اقل مقدم اقل فايده6.8٪؜ وبدون عمل  من المتحده جروب : سيات ابيزا 2021 اقل مقدم اقل فايده6.8٪؜ وبدون عمل من المتحده جروب : سيات ابيزا 2021 اقل مقدم اقل فايده6.8٪؜ وبدون عمل  من المتحده جروب : سيات ابيزا 2021 اقل مقدم اقل فايده6.8٪؜ وبدون عمل من المتحده جروب : سيات ابيزا 2021 اقل مقدم اقل فايده6.8٪؜ وبدون عمل",
+              title:ad.title
 
             ),
           ),
           Boxh10(),
           Boxh10(),
-          buildButton("محمد رحمان الخولي", Icons.account_circle, mainColor, (){}),
-          buildButton("الموقع علي الخريطة", Icons.location_on, Colors.blue, (){}),
-          buildButton("503841961", Icons.call, Colors.green, (){}),
+          // buildButton(ad, Icons.account_circle, mainColor, (){}),
+          buildButton("الموقع علي الخريطة", Icons.location_on, Colors.blue, (){
+            HelperFunctions.slt.openMap(ad.lat, ad.lng);
+          }),
+          buildButton(ad.phone, Icons.call, Colors.green, (){
+            _makePhoneCall('tel:${ad.phone}');
+          }),
         ],
       ),
     );
+  }
+
+  Future<void> _makePhoneCall(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   buildButton(title,icon,color,onPress){

@@ -1,12 +1,10 @@
-import 'dart:convert';
+import 'package:Donya/Providers/AuthProvider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-
-import 'package:http/http.dart' as http;
-import 'package:rafeeg/screens/SignUpScreen.dart';
-import '../shared_data.dart';
+import 'package:Donya/screens/SignUpScreen.dart';
+import 'package:provider/provider.dart';
+import '../helpers.dart';
 class SignInScreen extends StatefulWidget {
   @override
   _SignInScreenState createState() => _SignInScreenState();
@@ -14,8 +12,12 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   final Map<String, dynamic> formData = {};
+  var _authProvider;
   @override
   Widget build(BuildContext context) {
+    if(_authProvider==null){
+      _authProvider=Provider.of<AuthProvider>(context);
+    }
     return Scaffold(
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -68,7 +70,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   icon: Icons.phone_android,
                   inputType: TextInputType.phone,
                   onChange: (value) {
-                    formData['phone'] = value;
+                    formData['userName'] = value;
                   },
                   password: false),
               SizedBox(
@@ -88,6 +90,7 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               InkWell(
                 onTap: () {
+                  _authProvider.login(context: context,params: formData);
                 },
                 child: Container(
                   height: 60,
@@ -101,9 +104,15 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: Center(child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('الدخول', style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold,
-                          color: Colors.white),),
+                      Row(
+                        children: [
+                          Text('الدخول', style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold,
+                              color: Colors.white),),
+                          SizedBox(width: 20,),
+                         if (_authProvider.loading)SpinKitRing(color: Colors.white,lineWidth: 3,duration: Duration(milliseconds: 600),size: 25,)
+                        ],
+                      ),
                       SizedBox(
                         width: 10,
                       ),
@@ -137,20 +146,20 @@ class _SignInScreenState extends State<SignInScreen> {
 //            ),
               SizedBox(height: 20,),
 
-              InkWell(
-                onTap: () {
-                  pushPage(context, RegisterScreen());
-                },
-                child: Center(
-                  child: Text(
-                    'إنشاء حساب جديد',
-                    style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black45),
-                  ),
-                ),
-              ),
+              // InkWell(
+              //   onTap: () {
+              //     pushPage(context, RegisterScreen());
+              //   },
+              //   child: Center(
+              //     child: Text(
+              //       'إنشاء حساب جديد',
+              //       style: TextStyle(
+              //           fontSize: 17,
+              //           fontWeight: FontWeight.bold,
+              //           color: Colors.black45),
+              //     ),
+              //   ),
+              // ),
 
               SizedBox(height: 20,),
               Center(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../shared_data.dart';
+import '../helpers.dart';
 
 class Buttons extends StatelessWidget {
   final title;

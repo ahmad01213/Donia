@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:rafeeg/shared_data.dart';
+import 'package:Donya/shared_data.dart';
+
+import '../helpers.dart';
 
 class hDivider extends StatelessWidget {
   @override
